@@ -1,29 +1,36 @@
-const express = require("express")
-const mongoose = require("mongoose")
-const QRCode = require("qrcode")
-const path = require("path")
-const PORT = 8080;
+const express = require("express");
+const mongoose = require("mongoose");
+const QRCode = require("qrcode");
+const path = require("path");
+const urlRouter = require('./routes/urlRoute.js');
+const PORT = process.env.PORT || 8080;
 const app = express();
-const urlRouter = require('./routes/urlRoute.js')
 
-app.set('view engine', 'ejs')
-app.use(express.static('public'))
+// Environment Variables for MongoDB URI
+const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/url';
+
+// Middleware to Serve Static Files
+app.set('view engine', 'ejs');
+app.use(express.static('public'));
 app.use(express.static(path.join(__dirname, 'public')));
 
-mongoose.connect('mongodb://127.0.0.1:27017/url')
-.then(()=> console.log("connected to mongodb"))
-.catch((err)=> console.log(err))
+// Middleware for JSON and URL Encoded Data
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-// const db = mongoose.connection
-
-app.use(express.json())
-app.use(express.urlencoded({extended:true}))
-
-
-
-app.use('/', urlRouter)
- 
-
-app.listen(PORT,()=>{
-    console.log(`server is running at: ${PORT}`);
+// Connect to MongoDB
+mongoose.connect(MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  serverSelectionTimeoutMS: 30000, // 30 seconds
 })
+  .then(() => console.log("Connected to MongoDB"))
+  .catch((err) => console.error("MongoDB connection error:", err));
+
+// Routes
+app.use('/', urlRouter);
+
+// Start the Server
+app.listen(PORT, () => {
+  console.log(`Server is running at: ${PORT}`);
+});
