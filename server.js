@@ -39,9 +39,11 @@ app.listen(PORT, () => {
 
 const express = require("express");
 const mongoose = require("mongoose");
+const dotenv = require("dotenv");
 const QRCode = require("qrcode");
 const path = require("path");
 const urlRouter = require('./routes/urlRoute.js');
+dotenv.config();
 const PORT = process.env.PORT || 8080;
 const app = express();
 
