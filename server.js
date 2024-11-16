@@ -48,7 +48,7 @@ const PORT = process.env.PORT || 8080;
 const app = express();
 
 // MongoDB connection URI with username and password
-const MONGO_URI = process.env.MONGO_URI || "mongodb+srv://riyagoyalrg07:dB5waMTMv5Pe1DeN@url.pdf6h.mongodb.net/?retryWrites=true&w=majority";
+const MONGO_URI = process.env.MONGO_URI || "mongodb+srv://riyagoyalrg07:dB5waMTMv5Pe1DeN@url.pdf6h.mongodb.net/";
 
 // Middleware to Serve Static Files
 app.set('view engine', 'ejs');
